@@ -1,0 +1,58 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // matches: alimenté uniquement par les Cloud Functions (Admin SDK, bypass ces règles).
+    // Le client ne fait jamais que lire.
+    match /matches/{matchId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // users: chacun lit tout le monde (nécessaire pour le classement), mais ne peut
+    // modifier que son propre displayName. points/pronosticsCount ne sont jamais
+    // écrits par le client — uniquement par la Cloud Function awardPoints (Admin SDK).
+    match /users/{uid} {
+      allow read: if request.auth != null;
+
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.points == 0
+        && request.resource.data.pronosticsCount == 0;
+
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.points == resource.data.points
+        && request.resource.data.pronosticsCount == resource.data.pronosticsCount;
+    }
+
+    // pronostics: id composite "{uid}_{matchId}". Un utilisateur ne peut créer/modifier
+    // que ses propres pronostics, jamais après le coup d'envoi du match (vérifié
+    // côté serveur ici, pas seulement désactivé dans l'UI), et ne peut jamais écrire
+    // le champ "points" (réservé à la Cloud Function awardPoints).
+    match /pronostics/{pronosticId} {
+      // resource == null quand le document n'existe pas encore (ex: getDoc() de
+      // vérification avant création dans pronosticService.js) — sans ce garde,
+      // Firestore évalue resource.data sur null et refuse la lecture avec
+      // permission-denied avant même d'atteindre la logique de création.
+      allow read: if request.auth != null
+        && (resource == null || resource.data.userId == request.auth.uid);
+
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && pronosticId == request.auth.uid + '_' + request.resource.data.matchId
+        && request.resource.data.points == 0
+        && get(/databases/$(database)/documents/matches/$(request.resource.data.matchId)).data.date > request.time;
+
+      allow update: if request.auth != null
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.matchId == resource.data.matchId
+        && request.resource.data.points == resource.data.points
+        && get(/databases/$(database)/documents/matches/$(resource.data.matchId)).data.date > request.time;
+
+      allow delete: if false;
+    }
+  }
+}
