@@ -44,3 +44,4 @@ functions/.secret.local
 # generated native folders
 /ios
 /android
+graphify-out/
