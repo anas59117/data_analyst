@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "skills": {
+    "metaads": {
+      "source": "mfwarren/entrepreneur-claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-growth/MetaAds/SKILL.md",
+      "computedHash": "049df170dfb0ae0f7f3e0f8dc001b3f7b88165b2a3060d11a234b4ff9640efef"
+    },
+    "sk-competitors": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-competitors/SKILL.md",
+      "computedHash": "603fb4af06fa1b491cca8fc1d112d5d9e27954661a6fb4ae2a4d0786488c0474"
+    },
+    "sk-diverge": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-diverge/SKILL.md",
+      "computedHash": "707620b1e29993e2d9658cb13ab4ea52507849d8893c439efc700c79fbc968df"
+    },
+    "sk-export": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-export/SKILL.md",
+      "computedHash": "51145b42446a095fc93d00fe2033478e6b7702432a9df4341e5c688df0052e56"
+    },
+    "sk-leads": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-leads/SKILL.md",
+      "computedHash": "3b2fa5d4e15d1855d7d373493358e4b018d4b2841d7fbf6263c11e6167652d99"
+    },
+    "sk-money": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-money/SKILL.md",
+      "computedHash": "cf76548cde615ab7352538137ffb3d3451299730010b87c8b45a75cca42cebbf"
+    },
+    "sk-niche": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-niche/SKILL.md",
+      "computedHash": "cdd0c8aed64963c524d566ba5636c3a8c18414991372b621cf976c91b8d198a8"
+    },
+    "sk-offer": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-offer/SKILL.md",
+      "computedHash": "a5676dccfd9f419c3458a5004fce0a44c1cf8b733a1b86f48a14be9fa709c846"
+    },
+    "sk-pitch": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-pitch/SKILL.md",
+      "computedHash": "e02f07246a66d7981e559ea6382f27941b0b98cc12856c07ac8273851431ffd5"
+    },
+    "sk-positioning": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-positioning/SKILL.md",
+      "computedHash": "0a656f40b36b3b65ea0b13e429738c2ee39f2034a214ff9863e3cb241457f456"
+    },
+    "sk-skills": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-skills/SKILL.md",
+      "computedHash": "f1667f74a8bf4f2012cd91a4b55bcc196033426c1e8487b89f410ef8d57b2b65"
+    },
+    "sk-validate": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/sk-validate/SKILL.md",
+      "computedHash": "01c79326d2544c8cbcbcef0404bef4e29f52f22729a1c78da084b3c60d8f4df5"
+    },
+    "startupkit": {
+      "source": "mohamedameen-io/StartupKit",
+      "sourceType": "github",
+      "skillPath": "skills/startupkit/SKILL.md",
+      "computedHash": "7ea6ac6097a80cc9850a343ef4310a9013f79912173b8eaa8fd01de5e50fb0dc"
+    }
+  }
+}
