@@ -379,6 +379,12 @@
       "skillPath": "skills/startupkit/SKILL.md",
       "computedHash": "7ea6ac6097a80cc9850a343ef4310a9013f79912173b8eaa8fd01de5e50fb0dc"
     },
+    "token-efficiency": {
+      "source": "delphine-l/claude_global",
+      "sourceType": "github",
+      "skillPath": "skills/claude-meta/token-efficiency/SKILL.md",
+      "computedHash": "94754a40b57e4099db737663b50ca9e0eeb4244bed4c3caf4ee6727bb81c8f64"
+    },
     "video": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
