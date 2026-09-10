@@ -31,6 +31,12 @@
       "skillPath": "skills/analytics/SKILL.md",
       "computedHash": "f7f83a1c1c4ad904deba3164076b0407df00832463e93d998b36efe781f26867"
     },
+    "api-rate-limiting": {
+      "source": "secondsky/claude-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/api-rate-limiting/skills/api-rate-limiting/SKILL.md",
+      "computedHash": "5614b3778e70c9147ffc173b0f552afe411c9970903f7db907f04f7ffdd8989e"
+    },
     "aso": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -139,6 +145,12 @@
       "skillPath": "skills/find-skills/SKILL.md",
       "computedHash": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396"
     },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/firebase-auth-basics/SKILL.md",
+      "computedHash": "25070123c29d59098ac817dee0eee36a73b4a822e6bb925a0ebccab0c78cf1e9"
+    },
     "free-tools": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -210,6 +222,12 @@
       "sourceType": "github",
       "skillPath": "skills/marketing-growth/MetaAds/SKILL.md",
       "computedHash": "049df170dfb0ae0f7f3e0f8dc001b3f7b88165b2a3060d11a234b4ff9640efef"
+    },
+    "nodejs-backend": {
+      "source": "alinaqi/claude-bootstrap",
+      "sourceType": "github",
+      "skillPath": "skills/nodejs-backend/SKILL.md",
+      "computedHash": "3c993a513fcbe5fe53d3ccdc8fb1c690c0c03bbfe530020d73be829b5d5f58b4"
     },
     "offers": {
       "source": "coreyhaines31/marketingskills",
@@ -397,6 +415,12 @@
       "skillPath": "skills/claude-meta/token-efficiency/SKILL.md",
       "computedHash": "94754a40b57e4099db737663b50ca9e0eeb4244bed4c3caf4ee6727bb81c8f64"
     },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "computedHash": "3219a1944e404ffc14d1d9d6aef6dd2e3855b81387ee0a044ccbfe14d34c2357"
+    },
     "video": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -444,6 +468,18 @@
       "sourceType": "github",
       "skillPath": "skills/viral-youtube-shorts/SKILL.md",
       "computedHash": "a182212babdf9d6a26d11aa022a119275afdf962b5ed7a9492a39fac95ceb132"
+    },
+    "web-audio-api": {
+      "source": "martinholovsky/claude-skills-generator",
+      "sourceType": "github",
+      "skillPath": "skills/web-audio-api/SKILL.md",
+      "computedHash": "d791e113525eafe8c0bc0fb3dbbdef05d470b0cfedd9f1eaa2f00081d3fce1bd"
+    },
+    "websocket-engineer": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "skillPath": "skills/websocket-engineer/SKILL.md",
+      "computedHash": "8e5e1a8313d92d2d9631b163672291f7edd4cfdc4a7ede545fbcd863c0ab7f7b"
     }
   }
 }
