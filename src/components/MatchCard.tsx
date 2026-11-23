@@ -30,19 +30,28 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '12px',
+        marginBottom: '16px',
       }}>
-        <span style={{ fontSize: '0.75rem', color: 'var(--fg-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+        <span style={{
+          fontSize: '0.7rem',
+          color: 'var(--accent)',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+          background: 'rgba(59,130,246,0.1)',
+          padding: '3px 8px',
+          borderRadius: '4px',
+        }}>
           J{match.journee}
         </span>
         <span style={{ fontSize: '0.75rem', color: 'var(--fg-muted)' }}>{dateStr}</span>
         {match.status === 'finished' && (
           <span style={{
             fontSize: '0.7rem',
-            padding: '2px 8px',
+            padding: '3px 8px',
             borderRadius: '4px',
-            background: 'var(--success)',
-            color: '#fff',
+            background: 'rgba(34,197,94,0.15)',
+            color: 'var(--success)',
             fontWeight: 600,
           }}>
             Terminé
@@ -51,10 +60,10 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
         {match.status === 'live' && (
           <span style={{
             fontSize: '0.7rem',
-            padding: '2px 8px',
+            padding: '3px 8px',
             borderRadius: '4px',
-            background: 'var(--danger)',
-            color: '#fff',
+            background: 'rgba(239,68,68,0.15)',
+            color: 'var(--danger)',
             fontWeight: 600,
           }}>
             En cours
@@ -63,37 +72,87 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
       </div>
 
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr auto 1fr',
+        display: 'flex',
         alignItems: 'center',
-        gap: '12px',
+        justifyContent: 'center',
+        gap: '0',
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px' }}>
-          <span style={{ fontWeight: 600, fontSize: '0.95rem', textAlign: 'right' }}>
+        {/* Equipe domicile */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          minWidth: 0,
+        }}>
+          <TeamLogo name={match.homeTeam} logoUrl={match.homeLogo} size={44} />
+          <span style={{
+            fontWeight: 600,
+            fontSize: '0.8rem',
+            textAlign: 'center',
+            lineHeight: 1.2,
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}>
             {match.homeTeam}
           </span>
-          <TeamLogo name={match.homeTeam} logoUrl={match.homeLogo} size={36} />
         </div>
 
-        {match.status === 'finished' || match.status === 'live' ? (
-          <div style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.3rem',
-            fontWeight: 700,
-            minWidth: '60px',
-            textAlign: 'center',
-          }}>
-            {match.homeScore} - {match.awayScore}
-          </div>
-        ) : (
-          <div style={{ fontSize: '0.85rem', color: 'var(--fg-muted)', textAlign: 'center' }}>
-            vs
-          </div>
-        )}
+        {/* Score central */}
+        <div style={{
+          minWidth: '72px',
+          textAlign: 'center',
+          padding: '0 8px',
+        }}>
+          {match.status === 'finished' || match.status === 'live' ? (
+            <div style={{
+              fontFamily: 'var(--font-heading)',
+              fontSize: '1.5rem',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+            }}>
+              {match.homeScore} <span style={{ color: 'var(--fg-muted)', fontSize: '1rem' }}>-</span> {match.awayScore}
+            </div>
+          ) : (
+            <div style={{
+              fontSize: '0.8rem',
+              color: 'var(--fg-muted)',
+              fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+            }}>
+              vs
+            </div>
+          )}
+        </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <TeamLogo name={match.awayTeam} logoUrl={match.awayLogo} size={36} />
-          <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>
+        {/* Equipe extérieur */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '8px',
+          minWidth: 0,
+        }}>
+          <TeamLogo name={match.awayTeam} logoUrl={match.awayLogo} size={44} />
+          <span style={{
+            fontWeight: 600,
+            fontSize: '0.8rem',
+            textAlign: 'center',
+            lineHeight: 1.2,
+            maxWidth: '100%',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+          }}>
             {match.awayTeam}
           </span>
         </div>
@@ -101,7 +160,7 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
 
       {onSave && canEdit && (
         <div style={{
-          marginTop: '14px',
+          marginTop: '16px',
           paddingTop: '14px',
           borderTop: '1px solid var(--border)',
           display: 'flex',

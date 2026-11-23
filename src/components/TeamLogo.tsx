@@ -13,21 +13,34 @@ export default function TeamLogo({ name, logoUrl, size = 36 }: Props) {
 
   if (logoUrl && !imgError) {
     return (
-      <img
-        src={logoUrl}
-        alt={name}
-        onError={() => setImgError(true)}
-        style={{
-          width: size,
-          height: size,
-          objectFit: 'contain',
-          borderRadius: '50%',
-        }}
-      />
+      <div style={{
+        width: size,
+        height: size,
+        borderRadius: '50%',
+        background: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        overflow: 'hidden',
+        border: '2px solid rgba(255,255,255,0.15)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+      }}>
+        <img
+          src={logoUrl}
+          alt={name}
+          onError={() => setImgError(true)}
+          style={{
+            width: size * 0.7,
+            height: size * 0.7,
+            objectFit: 'contain',
+          }}
+        />
+      </div>
     )
   }
 
-  const fontSize = size < 32 ? '0.55rem' : size < 44 ? '0.65rem' : '0.75rem'
+  const fontSize = size < 32 ? '0.5rem' : size < 44 ? '0.6rem' : '0.7rem'
 
   return (
     <div
@@ -47,7 +60,8 @@ export default function TeamLogo({ name, logoUrl, size = 36 }: Props) {
         letterSpacing: '-0.02em',
         textShadow: '0 1px 2px rgba(0,0,0,0.3)',
         flexShrink: 0,
-        border: '2px solid rgba(255,255,255,0.1)',
+        border: '2px solid rgba(255,255,255,0.15)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
       }}
     >
       {team.abbr}
