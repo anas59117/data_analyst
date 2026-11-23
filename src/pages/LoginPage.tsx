@@ -29,11 +29,16 @@ export default function LoginPage() {
       }
       navigate('/')
     } catch (err) {
-      const msg = (err as { code?: string }).code
-      if (msg === 'auth/email-already-in-use') setError('Cet email est déjà utilisé')
-      else if (msg === 'auth/invalid-credential') setError('Email ou mot de passe incorrect')
-      else if (msg === 'auth/weak-password') setError('Mot de passe trop faible (6 caractères min.)')
-      else setError('Une erreur est survenue')
+      const code = (err as { code?: string }).code ?? ''
+      const errors: Record<string, string> = {
+        'auth/email-already-in-use': 'Cet email est déjà utilisé',
+        'auth/invalid-credential': 'Email ou mot de passe incorrect',
+        'auth/weak-password': 'Mot de passe trop faible (6 caractères min.)',
+        'auth/operation-not-allowed': 'Méthode de connexion non activée dans Firebase',
+        'auth/invalid-email': 'Email invalide',
+        'auth/too-many-requests': 'Trop de tentatives, réessaie plus tard',
+      }
+      setError(errors[code] ?? `Erreur : ${code || (err as Error).message}`)
     } finally {
       setLoading(false)
     }
