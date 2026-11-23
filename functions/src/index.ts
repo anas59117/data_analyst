@@ -5,66 +5,100 @@ import * as admin from 'firebase-admin'
 
 admin.initializeApp()
 
-const FOOTBALL_API_KEY = defineSecret('FOOTBALL_API_KEY')
-const API_BASE = 'https://api.football-data.org/v4'
-const LIGUE1_CODE = 'FL1'
+const API_FOOTBALL_KEY = defineSecret('API_FOOTBALL_KEY')
+const API_HOST = 'v3.football.api-sports.io'
+const LIGUE1_ID = 61
 
-interface ApiMatch {
-  id: number
-  utcDate: string
-  matchday: number
-  status: string
-  homeTeam: { name: string; crest: string }
-  awayTeam: { name: string; crest: string }
-  score: {
-    fullTime: { home: number | null; away: number | null }
+interface ApiFixture {
+  fixture: {
+    id: number
+    date: string
+    status: { short: string; long: string }
   }
+  league: { round: string }
+  teams: {
+    home: { id: number; name: string; logo: string }
+    away: { id: number; name: string; logo: string }
+  }
+  goals: { home: number | null; away: number | null }
 }
 
-function mapStatus(apiStatus: string): 'scheduled' | 'live' | 'finished' {
-  switch (apiStatus) {
-    case 'FINISHED':
+function mapStatus(shortStatus: string): 'scheduled' | 'live' | 'finished' {
+  switch (shortStatus) {
+    case 'FT':
+    case 'AET':
+    case 'PEN':
       return 'finished'
-    case 'IN_PLAY':
-    case 'PAUSED':
-    case 'HALFTIME':
+    case '1H':
+    case '2H':
+    case 'HT':
+    case 'ET':
+    case 'BT':
+    case 'P':
+    case 'LIVE':
       return 'live'
     default:
       return 'scheduled'
   }
 }
 
-async function syncLigue1Matches(apiKey: string): Promise<number> {
-  const res = await fetch(`${API_BASE}/competitions/${LIGUE1_CODE}/matches`, {
-    headers: { 'X-Auth-Token': apiKey },
-  })
+function extractJournee(round: string): number {
+  const match = round.match(/(\d+)/)
+  return match ? parseInt(match[1], 10) : 1
+}
+
+async function syncLigue1(apiKey: string, season?: number): Promise<number> {
+  const currentSeason = season ?? new Date().getFullYear()
+
+  const res = await fetch(
+    `https://${API_HOST}/fixtures?league=${LIGUE1_ID}&season=${currentSeason}`,
+    {
+      headers: {
+        'x-apisports-key': apiKey,
+      },
+    },
+  )
 
   if (!res.ok) {
-    throw new Error(`API error ${res.status}: ${await res.text()}`)
+    throw new Error(`API-Football error ${res.status}: ${await res.text()}`)
   }
 
-  const data = await res.json() as { matches: ApiMatch[] }
-  const db = admin.firestore()
+  const data = await res.json() as { response: ApiFixture[]; errors: Record<string, string> }
 
+  if (Object.keys(data.errors).length > 0) {
+    throw new Error(`API-Football errors: ${JSON.stringify(data.errors)}`)
+  }
+
+  const fixtures = data.response
+  if (!fixtures || fixtures.length === 0) {
+    // Si la saison en cours ne retourne rien, essayer l'année précédente
+    if (!season) {
+      return syncLigue1(apiKey, currentSeason - 1)
+    }
+    return 0
+  }
+
+  const db = admin.firestore()
   const BATCH_LIMIT = 500
+
   let count = 0
 
-  for (let i = 0; i < data.matches.length; i += BATCH_LIMIT) {
-    const chunk = data.matches.slice(i, i + BATCH_LIMIT)
+  for (let i = 0; i < fixtures.length; i += BATCH_LIMIT) {
+    const chunk = fixtures.slice(i, i + BATCH_LIMIT)
     const batch = db.batch()
 
-    for (const match of chunk) {
-      const docRef = db.collection('matches').doc(`fl1_${match.id}`)
+    for (const f of chunk) {
+      const docRef = db.collection('matches').doc(`apif_${f.fixture.id}`)
       batch.set(docRef, {
-        homeTeam: match.homeTeam.name,
-        awayTeam: match.awayTeam.name,
-        homeLogo: match.homeTeam.crest || null,
-        awayLogo: match.awayTeam.crest || null,
-        homeScore: match.score.fullTime.home,
-        awayScore: match.score.fullTime.away,
-        date: admin.firestore.Timestamp.fromDate(new Date(match.utcDate)),
-        journee: match.matchday,
-        status: mapStatus(match.status),
+        homeTeam: f.teams.home.name,
+        awayTeam: f.teams.away.name,
+        homeLogo: f.teams.home.logo || null,
+        awayLogo: f.teams.away.logo || null,
+        homeScore: f.goals.home,
+        awayScore: f.goals.away,
+        date: admin.firestore.Timestamp.fromDate(new Date(f.fixture.date)),
+        journee: extractJournee(f.league.round),
+        status: mapStatus(f.fixture.status.short),
       }, { merge: true })
       count++
     }
@@ -75,25 +109,25 @@ async function syncLigue1Matches(apiKey: string): Promise<number> {
   return count
 }
 
-// Sync tous les jours à 6h du matin (UTC)
+// Sync tous les jours à 6h du matin (heure de Paris)
 export const scheduledSync = onSchedule({
   schedule: 'every day 06:00',
   timeZone: 'Europe/Paris',
-  secrets: [FOOTBALL_API_KEY],
+  secrets: [API_FOOTBALL_KEY],
   region: 'europe-west1',
 }, async () => {
-  const count = await syncLigue1Matches(FOOTBALL_API_KEY.value())
+  const count = await syncLigue1(API_FOOTBALL_KEY.value())
   console.log(`Synced ${count} Ligue 1 matches`)
 })
 
 // Endpoint HTTP pour sync manuelle
 export const syncNow = onRequest({
-  secrets: [FOOTBALL_API_KEY],
+  secrets: [API_FOOTBALL_KEY],
   region: 'europe-west1',
   cors: true,
 }, async (req, res) => {
   try {
-    const count = await syncLigue1Matches(FOOTBALL_API_KEY.value())
+    const count = await syncLigue1(API_FOOTBALL_KEY.value())
     res.json({ success: true, matchesSynced: count })
   } catch (err) {
     console.error('Sync failed:', err)
