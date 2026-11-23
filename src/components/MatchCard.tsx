@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Match, Pronostic } from '@/types'
+import TeamLogo from '@/components/TeamLogo'
 
 interface Props {
   match: Match
@@ -67,8 +68,11 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
         alignItems: 'center',
         gap: '12px',
       }}>
-        <div style={{ textAlign: 'right', fontWeight: 600, fontSize: '0.95rem' }}>
-          {match.homeTeam}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px' }}>
+          <span style={{ fontWeight: 600, fontSize: '0.95rem', textAlign: 'right' }}>
+            {match.homeTeam}
+          </span>
+          <TeamLogo name={match.homeTeam} logoUrl={match.homeLogo} size={36} />
         </div>
 
         {match.status === 'finished' || match.status === 'live' ? (
@@ -87,8 +91,11 @@ export default function MatchCard({ match, pronostic, onSave, saving }: Props) {
           </div>
         )}
 
-        <div style={{ fontWeight: 600, fontSize: '0.95rem' }}>
-          {match.awayTeam}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <TeamLogo name={match.awayTeam} logoUrl={match.awayLogo} size={36} />
+          <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>
+            {match.awayTeam}
+          </span>
         </div>
       </div>
 
